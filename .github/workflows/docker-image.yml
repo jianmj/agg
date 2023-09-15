@@ -34,5 +34,5 @@ jobs:
       with:
         context: .
         push: true
-        tag: ${{ steps.meta.outputs.tags }}
+        tag: 4
         labels: ${{ steps.meta.outputs.labels }}
