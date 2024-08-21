@@ -4,16 +4,25 @@ pub fn frames(
     stdout: impl Iterator<Item = (f64, String)>,
     terminal_size: (usize, usize),
 ) -> impl Iterator<Item = (f64, Vec<Vec<(char, avt::Pen)>>, Option<(usize, usize)>)> {
-    let mut vt = avt::Vt::new(terminal_size.0, terminal_size.1);
+    let mut vt = avt::Vt::builder()
+        .size(terminal_size.0, terminal_size.1)
+        .scrollback_limit(0)
+        .build();
+
     let mut prev_cursor = None;
 
     stdout.filter_map(move |(time, data)| {
-        let changed_lines = vt.feed_str(&data);
-        let cursor = vt.cursor();
+        let (changed_lines, _) = vt.feed_str(&data);
+        let cursor: Option<(usize, usize)> = vt.cursor().into();
 
         if !changed_lines.is_empty() || cursor != prev_cursor {
             prev_cursor = cursor;
-            let lines = vt.lines().map(|line| line.cells().collect()).collect();
+
+            let lines = vt
+                .view()
+                .iter()
+                .map(|line| line.cells().collect())
+                .collect();
 
             Some((time, lines, cursor))
         } else {

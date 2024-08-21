@@ -1,13 +1,13 @@
 [package]
 name = "agg"
-version = "1.4.2"
+version = "1.4.3"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = "1"
-avt = { git = "https://github.com/asciinema/avt.git", tag = "v0.6.0" }
+avt = { git = "https://github.com/asciinema/avt.git", tag = "v0.8.3" }
 clap = { version = "3.2.15", features = ["derive"] }
 env_logger = "0.10"
 fontdb = "0.10"
